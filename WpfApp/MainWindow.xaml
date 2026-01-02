@@ -6,8 +6,19 @@
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-
-    <ListBox x:Name="view1" ItemsSource="{Binding}" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+   
+        <Grid>
+            <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+     
+        </Grid.ColumnDefinitions>-->
+    <ListBox Grid.Row="0" x:Name="view1" ItemsSource="{Binding}" Margin="10" 
+            ScrollViewer.HorizontalScrollBarVisibility="Auto">
         <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" />
@@ -28,7 +39,13 @@
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>
+        <StackPanel  Grid.Row="1" Orientation="Horizontal">
+        <Button  x:Name="load" Content="Load Data" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Grid.Row="1" Click="LoadData_Click"/>
+            <Button  x:Name="add" Content="add Data" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Grid.Row="1" Click="AddData_Click"/>
+            <Button  x:Name="update" Content="update Data" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Grid.Row="1" Click="UpdateData_Click"/>
+            <Button  x:Name="delete" Content="delete Data" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Grid.Row="1" Click="DelData_Click"/>
+            <Button  x:Name="loadAnimals" Content="load Animals" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Grid.Row="1" Click="loadAnimals_Click"/> 
+        </StackPanel>
 
-
-
+    </Grid>
 </Window>

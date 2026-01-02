@@ -1,0 +1,23 @@
+﻿<Window x:Class="WpfApp.AddAnimalWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp"
+        mc:Ignorable="d"
+        Title="AddAnimalWin" Height="450" Width="800">
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBlock Text="Add New Animal" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Name:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="NameTextBox" Width="200" Text="{Binding Name}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Image File:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="ImageFileTextBox" Width="200" Text="{Binding ImageFile}"/>
+            </StackPanel>
+            <Button Content="Add Animal" Width="100" Height="30" HorizontalAlignment="Center" Click="AddAnimalButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

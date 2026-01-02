@@ -1,0 +1,69 @@
+﻿<Window x:Class="WpfApp.AnimalsWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp"
+        mc:Ignorable="d"
+        Title="AnimalsWin" Height="450" Width="800">
+    <StackPanel>
+
+        <TextBlock Text="Animals List"
+               FontSize="20"
+               FontWeight="Bold"
+               Margin="10"
+               HorizontalAlignment="Center"/>
+        
+        <DataGrid x:Name="AnimalsDataGrid"
+          AutoGenerateColumns="False"
+          Margin="10"
+          HeadersVisibility="Column"
+          RowHeight="50"
+          Height="200">
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete Animal" Click="DeleteStudent_Click"/>
+                    <MenuItem Header="Edit Animal" Click="EditStudent_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="Name"
+                            Binding="{Binding Name}"
+                            Width="*" />
+
+                <DataGridTextColumn Header="Image File Name"
+                            Binding="{Binding ImageFile}"
+                            Width="*" />
+
+                <DataGridTemplateColumn Header="Image" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding ImageFile}"
+                           Width="45"
+                           Height="45"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Load Animals"
+            Width="120"
+            Height="30"
+            Margin="10"
+            HorizontalAlignment="Center"
+            Click="LoadAnimlsButton_Click"/>
+
+        <Button Content="Add Animals"
+    Width="120"
+    Height="30"
+    Margin="10"
+    HorizontalAlignment="Center"
+    Click="AddAnimlsButton_Click"/>
+    </StackPanel>
+</Window>

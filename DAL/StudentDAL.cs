@@ -8,83 +8,92 @@ using Model;
 
 namespace DAL
 {
-    public class StudentDAL
+
+    public class StudentDal : BaseDal
     {
-        // Methods for StudentDAL would go here
-        public static List<Student> GetAllStudents()
-        {
-            // Implementation to retrieve all students from the database
-            List<Student> students = new List<Student>();
-            string sql = "SELECT * FROM Students";
-            DataTable table = SQLHelper.SelectData(sql);
-            foreach (DataRow dr in table.Rows)
-            {
-                string id = dr["ID"].ToString();
-                string fName = dr["FName"].ToString();
-                string lName = dr["LName"].ToString();
-                Student student = new Student()
-                {
-                    Id = int.Parse(id),
-                    FName = fName,
-                    LName = lName,
-                    FavAnimal = null
-                };
+        public StudentDal() : base() { }
 
-            }
-            return students;
-        }
-        public static List<Student> GetAllStudentsWithAnimal()
+        public List<Student> GetAllStudents()
         {
-            // Implementation to retrieve all students from the database
-            List<Student> students = new List<Student>();
-            //הסימן @ מאפשר כתיבת מחרוזת על פני מספר שורות
             string sql = @"
-        SELECT 
-            StudentTbl.StudentId, 
-            StudentTbl.FName, 
-            StudentTbl.LName, 
-            StudentTbl.FavAnimalId, 
-            AnimalTbl.AnimalId, 
-            AnimalTbl.Name AS AnimalName, 
-            AnimalTbl.ImageFile
-        FROM StudentTbl
-        LEFT JOIN AnimalTbl
-        ON StudentTbl.FavAnimalId = AnimalTbl.AnimalId;";
+                    SELECT 
+                        s.StudentId,
+                        s.FName,
+                        s.LName,
+                        a.AnimalId,
+                        a.Name AS AnimalName,
+                        a.ImageFile
+                    FROM StudentTbl s
+                    LEFT JOIN AnimalTbl a
+                    ON s.FavAnimalId = a.AnimalId";
+            DataTable dt = base.ExecuteSelectAllQuery(sql);
+            List<Student> students = new List<Student>();
 
-            DataTable table = SQLHelper.SelectData(sql);
-
-            foreach (DataRow dr in table.Rows)
+            foreach (DataRow row in dt.Rows)
             {
-                int studentId = int.Parse(dr["StudentId"].ToString());
-                string fName = dr["FName"].ToString();
-                string lName = dr["LName"].ToString();
-
-                // בדיקה אם יש חיה -ייתכן שאין, בגלל LEFT JOIN
-                // אם אין חיה, נשאיר את favAnimal  ב -null
-                // אם יש חיה, ניצור אובייקט Animal
-                Animal favAnimal = null;
-                if (dr["AnimalId"] != DBNull.Value)
-                {
-                    favAnimal = new Animal()
-                    {
-                        Id = int.Parse(dr["AnimalId"].ToString()),
-                        Name = dr["AnimalName"].ToString(),
-                        ImageFile = dr["ImageFile"].ToString()
-                    };
-                }
-
-                Student student = new Student()
-                {
-                    Id = studentId,
-                    FName = fName,
-                    LName = lName,
-                    FavAnimal = favAnimal
-                };
-
-                students.Add(student);
+                Student s = (Student)CreateModel(row);
+                students.Add(s);
             }
-
             return students;
         }
+        public override BaseEntity CreateModel(DataRow row)
+        {
+            Student s = new Student();
+
+            s.Id = row.Field<int>("studentId");
+            s.FName = row.Field<string>("FName");
+            s.LName = row.Field<string>("LName");
+
+            Animal animal=null;
+
+            if (row["AnimalId"] != null)
+            {
+                animal = new Animal();
+                animal.Id = row.Field<int>("AnimalId");
+                animal.Name = row.Field<string>("AnimalName");
+                animal.ImageFile = row.Field<string>("ImageFile");
+            }
+           
+            s.FavAnimal = animal;
+
+            return s;
+        }
+
+        public int AddStudent(Student student)
+        {
+            string sql = $@"
+                INSERT INTO StudentTbl (FName, LName, FavAnimalId)
+                VALUES (
+                    '{student.FName}',
+                    '{student.LName}',
+                    {(student.FavAnimal != null ? student.FavAnimal.Id.ToString() : "NULL")}
+                )";
+            int rowsAffected = ExecuteInsertQuery(sql);
+            return rowsAffected;
+        }
+
+        public int UpdateStudent(Student student)
+        {
+            string sql = $@"
+                UPDATE StudentTbl
+                SET 
+                    FName = '{student.FName}',
+                    LName = '{student.LName}',
+                    FavAnimalId = {(student.FavAnimal != null ? student.FavAnimal.Id.ToString() : "NULL")}
+                WHERE StudentId = {student.Id}";
+            int rowsAffected = ExecuteUpdateQuery(sql);
+            return rowsAffected;
+        }
+        public int DeleteStudent(Student student)
+        {
+            string sql = $"DELETE from StudentTbl WHERE StudentId = {student.Id}";
+            int rowsAffected = ExecuteDeleteQuery(sql);
+            return rowsAffected;
+
+        }
+
     }
 }
+
+
+

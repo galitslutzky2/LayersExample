@@ -10,12 +10,55 @@ namespace BLL
 {
     public class StudentBLL
     {
-        // Methods for StudentBLL would go here
-        public static List<Student> GetStudentList()
+        private StudentDal studentDal;
+
+        public StudentBLL()
         {
-            // Implementation of business logic
-            List<Student> students =  StudentDAL.GetAllStudentsWithAnimal();
+            studentDal = new StudentDal();
+        }
+
+        public List<Student> GetStudentList()
+        {
+            List<Student> students = studentDal.GetAllStudents();
+            // כאן יכולה להיות לוגיקה עסקית
+            // בדיקות, חישובים, סינון וכו'
+
             return students;
         }
+        public List<Student> GetAllStudentsWithAnimal()
+        {
+            List<Student> students = studentDal.GetAllStudents();
+            // כאן יכולה להיות לוגיקה עסקית
+            // בדיקות, חישובים, סינון וכו'
+
+            return students;
+        }
+        public void AddStudent(Student student)
+        {
+            studentDal.AddStudent(student);
+        }
+        public void SomeBusinessLogic()
+        {
+            // דוגמה ללוגיקה עסקית נוספת
+            List<Student> students = studentDal.GetAllStudents();
+            foreach (var student in students)
+            {
+                // לדוגמה, להוסיף לוגיקה לעדכון שם פרטי
+                student.FName = student.FName[0].ToString().ToUpper() + student.FName.Substring(1).ToLower();
+                studentDal.UpdateStudent(student);
+            }
+            // אפשר להחזיר או לעדכן את הנתונים בהתאם לצורך
+        }
+        public int UpdateStudent(Student student)
+        {
+            return studentDal.UpdateStudent(student);
+        }
+        public int DeleteStudent(Student student)
+        {
+            return studentDal.DeleteStudent(student);
+        }
+
     }
 }
+
+
