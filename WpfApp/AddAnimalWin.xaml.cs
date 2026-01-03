@@ -20,7 +20,7 @@ namespace WpfApp
     /// </summary>
     public partial class AddAnimalWin : Window
     {
-        public Animal NewAnimal { get; set; }
+        public Animal NewAnimal;
         BLL.AnimalBLL animalBLL;
 
         public AddAnimalWin()
@@ -28,6 +28,9 @@ namespace WpfApp
             InitializeComponent();
             animalBLL = new BLL.AnimalBLL();
             NewAnimal = new Animal();
+            NewAnimal.Name = "aa";
+            NewAnimal.ImageFile = "";
+            this.DataContext = NewAnimal;
         }
 
         private void AddAnimalButton_Click(object sender, RoutedEventArgs e)
@@ -38,13 +41,6 @@ namespace WpfApp
                 MessageBox.Show("Please fill all fields");
                 return;
             }
-            DataContext = NewAnimal;           // לא עובד כי לא עדכנו את הניו אנימל?????
-
-            //NewAnimal = new Animal
-            //{
-            //    Name = NameTextBox.Text,
-            //    ImageFile = ImageFileTextBox.Text
-            //};
             BLL.AnimalBLL animalBLL = new BLL.AnimalBLL();
             animalBLL.AddAnimal(NewAnimal);
             this.Close();
